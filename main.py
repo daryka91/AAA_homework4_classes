@@ -2,13 +2,12 @@ import json
 import keyword
 
 
-class ColorMixin:
+class ColourMixin:
     """окрашивает текст"""
     repr_colour = '\033[33m'  # желтый
     to_base_colour = '\033[0m'  # конец окрашивания
 
     def __str__(self):
-
         return f'{self.repr_colour}{self.title} | {self.price}{self.to_base_colour}'
 
 
@@ -31,7 +30,7 @@ class MapJson:
         return str(self.__data)
 
 
-class Advert( MapJson):
+class Advert(ColourMixin, MapJson):
 
     def __init__(self, title, price1=0, input_dict={}):
         super().__init__(input_dict)
