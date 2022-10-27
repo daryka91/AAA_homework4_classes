@@ -49,8 +49,6 @@ class Advert(ColourMixin, MapJson):
             self.price_value = price2
 
     def __repr__(self):
-        # colour_beauty, colour_base = super().__repr__().split()
-        # return colour_beauty + f'{self.title} | {self.price} ' + colour_base
         return f'{self.title} | {self.price}'
 
 
@@ -74,7 +72,7 @@ if __name__ == '__main__':
                     }"""
     # lesson_str = '{"title": "python"}'
     lesson = json.loads(lesson_str)
-    lsn1 = Advert('title', 1000, lesson)  # конфликта нет, потому что
+    lsn1 = Advert('title', 1000, lesson)
     print(lsn1)
     print(lsn1.class_)
 
