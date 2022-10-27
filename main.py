@@ -3,12 +3,17 @@ import keyword
 
 
 class ColorMixin:
+    """окрашивает текст"""
+    repr_colour = '\033[33m'  # желтый
+    to_base_colour = '\033[0m'  # конец окрашивания
 
     def __str__(self):
-        return f"\033[1;33;20m {self.title} | {self.price}\033[0;0;0m"
+
+        return f'{self.repr_colour}{self.title} | {self.price}{self.to_base_colour}'
 
 
 class MapJson:
+    """ преобразeует JSON-объеĸты в python-объеĸты с доступом ĸ атрибутам через точĸу"""
     def __init__(self, input_dict: dict):
         self.__data = {}
         for key, value in input_dict.items():  # Убедиться, что входящие данные можно преобразовать в словарь
@@ -26,7 +31,7 @@ class MapJson:
         return str(self.__data)
 
 
-class Advert(ColorMixin, MapJson):
+class Advert( MapJson):
 
     def __init__(self, title, price1=0, input_dict={}):
         super().__init__(input_dict)
@@ -45,6 +50,8 @@ class Advert(ColorMixin, MapJson):
             self.price_value = price2
 
     def __repr__(self):
+        # colour_beauty, colour_base = super().__repr__().split()
+        # return colour_beauty + f'{self.title} | {self.price} ' + colour_base
         return f'{self.title} | {self.price}'
 
 
@@ -58,19 +65,18 @@ if __name__ == '__main__':
     #                 "metro_stations": ["Белорусская", "Маяковская"]
     #                 }
     #                 }"""
-    # lesson_str = """{
-    #                 "title": "Вельш-корги",
-    #                 "price": 1000,
-    #                 "class": "dogs",
-    #                 "location": {
-    #                 "address": "сельское поселение Ельдигинское, поселок санатория Тишково, 25"
-    #                 }
-    #                 }"""
-    lesson_str = '{"title": "python"}'
+    lesson_str = """{
+                    "title": "Вельш-корги",
+                    "price": 1000,
+                    "class": "dogs",
+                    "location": {
+                    "address": "сельское поселение Ельдигинское, поселок санатория Тишково, 25"
+                    }
+                    }"""
+    # lesson_str = '{"title": "python"}'
     lesson = json.loads(lesson_str)
-    lsn = MapJson(lesson)
-    lsn1 = Advert('title', -5)  # конфликта нет, потому что
+    lsn1 = Advert('title', 1000, lesson)  # конфликта нет, потому что
     print(lsn1)
-    print(lsn.class_)
+    print(lsn1.class_)
 
 
