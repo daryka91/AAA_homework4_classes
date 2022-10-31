@@ -4,15 +4,18 @@ import keyword
 
 class ColourMixin:
     """окрашивает текст"""
-    repr_colour = '\033[33m'  # желтый
-    to_base_colour = '\033[0m'  # конец окрашивания
 
     def __str__(self):
-        return f'{self.repr_colour}{self.title} | {self.price}{self.to_base_colour}'
+        repr_color_code = self.repr_color_code
+        to_base_colour = self.to_base_colour
+        repr_colour = '\033[' + f'{self.repr_color_code}' + 'm'
+        to_base_colour = '\033[' + f'{self.to_base_colour}' + 'm'
+        return f'{repr_colour}{self.title} | {self.price}{to_base_colour}'
 
 
 class MapJson:
     """ преобразeует JSON-объеĸты в python-объеĸты с доступом ĸ атрибутам через точĸу"""
+
     def __init__(self, input_dict: dict):
         self.__data = {}
         for key, value in input_dict.items():  # Убедиться, что входящие данные можно преобразовать в словарь
@@ -31,22 +34,21 @@ class MapJson:
 
 
 class Advert(ColourMixin, MapJson):
+    repr_color_code = 32  # green
+    to_base_colour = 0  # black
 
-    def __init__(self, title, price1=0, input_dict={}):
+    def __init__(self, input_dict):
         super().__init__(input_dict)
-        self.title = title
-        self.price = price1
 
-    @property
-    def price(self):
-        return self.price_value if self.price_value else 0
+        if not self.title:
+            raise NameError('The Advert must has a title')
 
-    @price.setter
-    def price(self, price2):
-        if price2 < 0:
-            raise ValueError("must be >= 0")
-        else:
-            self.price_value = price2
+        print(self.__dict__.keys())
+
+        if not self.price:
+            self.price = 0
+        elif self.price < 0:
+            raise ValueError('price must be >= 0')
 
     def __repr__(self):
         return f'{self.title} | {self.price}'
@@ -72,8 +74,9 @@ if __name__ == '__main__':
                     }"""
     # lesson_str = '{"title": "python"}'
     lesson = json.loads(lesson_str)
-    lsn1 = Advert('title', 1000, lesson)
-    print(lsn1)
-    print(lsn1.class_)
-
-
+    # lsn1 = MapJson(lesson)
+    lsn2 = Advert(lesson)
+    print(lsn2.price)
+    # print(lsn1)
+    print(lsn2.location.address)
+    print(lsn2)
