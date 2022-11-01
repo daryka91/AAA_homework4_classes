@@ -3,24 +3,23 @@ import keyword
 
 
 class ColourMixin:
-    """окрашивает текст"""
+    """Окрашивает текст"""
 
     def __str__(self):
-        repr_color_code = self.repr_color_code
-        to_base_colour = self.to_base_colour
         repr_colour = '\033[' + f'{self.repr_color_code}' + 'm'
         to_base_colour = '\033[' + f'{self.to_base_colour}' + 'm'
         return f'{repr_colour}{self.title} | {self.price}{to_base_colour}'
 
 
 class MapJson:
-    """ преобразeует JSON-объеĸты в python-объеĸты с доступом ĸ атрибутам через точĸу"""
+    """ Преобразeует JSON-объеĸты в python-объеĸты с доступом ĸ атрибутам
+    через точĸу """
 
     def __init__(self, input_dict: dict):
         self.__data = {}
-        for key, value in input_dict.items():  # Убедиться, что входящие данные можно преобразовать в словарь
-            if keyword.iskeyword(key):  # Если некоторые атрибуты являются ключевыми словами Python
-                key += "_"  # Затем добавим подчеркивание после
+        for key, value in input_dict.items():  # проверка на ключевые слова
+            if keyword.iskeyword(key):
+                key += "_"                     # подчеркивание после ключей
             self.__data[key] = value
 
     def __getattr__(self, item):
@@ -34,6 +33,8 @@ class MapJson:
 
 
 class Advert(ColourMixin, MapJson):
+    """Преобразует объявление в python-объеĸты с доступом ĸ атрибутам
+    через точĸу и окрашивает описание в заданный цвет"""
     repr_color_code = 32  # green
     to_base_colour = 0  # black
 
@@ -41,7 +42,7 @@ class Advert(ColourMixin, MapJson):
         super().__init__(input_dict)
 
         if not self.title:
-            raise NameError('The Advert must has a title')
+            raise ValueError('The Advert must has a title')
 
         print(self.__dict__.keys())
 
@@ -55,15 +56,15 @@ class Advert(ColourMixin, MapJson):
 
 
 if __name__ == '__main__':
-    # lesson_str = """{
-    #                 "title": "python",
-    #                 "price": -2,
-    #                 "class": "phone",
-    #                 "location": {
-    #                 "address": "город Москва, Лесная, 7",
-    #                 "metro_stations": ["Белорусская", "Маяковская"]
-    #                 }
-    #                 }"""
+    lesson_str_1 = """{
+                    "title": "python",
+                    "price": -2,
+                    "class": "phone",
+                    "location": {
+                    "address": "город Москва, Лесная, 7",
+                    "metro_stations": ["Белорусская", "Маяковская"]
+                    }
+                    }"""
     lesson_str = """{
                     "title": "Вельш-корги",
                     "price": 1000,
@@ -72,11 +73,9 @@ if __name__ == '__main__':
                     "address": "сельское поселение Ельдигинское, поселок санатория Тишково, 25"
                     }
                     }"""
-    # lesson_str = '{"title": "python"}'
+
     lesson = json.loads(lesson_str)
-    # lsn1 = MapJson(lesson)
     lsn2 = Advert(lesson)
     print(lsn2.price)
-    # print(lsn1)
     print(lsn2.location.address)
     print(lsn2)
