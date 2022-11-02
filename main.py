@@ -79,3 +79,5 @@ if __name__ == '__main__':
     print(lsn2.price)
     print(lsn2.location.address)
     print(lsn2)
+
+    
