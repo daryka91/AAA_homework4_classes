@@ -36,7 +36,7 @@ class Advert(ColourMixin, MapJson):
     """Преобразует объявление в python-объеĸты с доступом ĸ атрибутам
     через точĸу и окрашивает описание в заданный цвет"""
     repr_color_code = 32  # green
-    to_base_colour = 0  # black
+    to_base_colour = 0    # black
 
     def __init__(self, input_dict):
         super().__init__(input_dict)
